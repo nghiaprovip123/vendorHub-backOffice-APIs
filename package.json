@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon --watch src --ext ts,json --exec \"ts-node -r tsconfig-paths/register src/app.ts\"",
     "build": "tsc",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",

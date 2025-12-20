@@ -1,38 +1,22 @@
-import express, { Express, Request, Response } from "express"
-import cors from "cors"
-import helmet from "helmet"
-import compression from "compression"
-import cookieParser from "cookie-parser"
-import dotenv from "dotenv"
+import express from "express";
+import router  from "@/route/auth/auth.route"
+import { errorHandler } from "./middlewares/error.middleware";
+import dotenv from "dotenv";
+dotenv.config();
 
-dotenv.config()
+const PORT = 3000;
+const app = express();
 
-const app: Express = express()
+// Middleware để parse JSON
+app.use(express.json());
 
-app.use(helmet())
-app.use(compression())
-app.use(cors({
-  origin: "*",
-  credentials: true,
-}))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
+// Routes
+app.use("/auth", router);
 
-app.get("/vendorhub", (_req: Request, res: Response) => {
-  res.json({ status: "ok" })
-})
+// Error handler phải đặt cuối cùng
+app.use(errorHandler);
 
-app.get("/", (_req: Request, res: Response) => {
-  res.json({
-    name: "VendorHub API",
-    status: "running",
-    env: process.env.NODE_ENV,
-  })
-})
-
-const PORT = Number(process.env.PORT) || 8080
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`)
-})
+// Chạy server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+});

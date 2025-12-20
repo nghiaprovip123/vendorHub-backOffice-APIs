@@ -4,40 +4,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const helmet_1 = __importDefault(require("helmet"));
-const compression_1 = __importDefault(require("compression"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const auth_route_1 = __importDefault(require("@/route/auth/auth.route"));
+const error_middleware_1 = require("./middlewares/error.middleware");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+const PORT = 3000;
 const app = (0, express_1.default)();
-/* ================= Middleware ================= */
-app.use((0, helmet_1.default)());
-app.use((0, compression_1.default)());
-app.use((0, cors_1.default)({
-    origin: "*",
-    credentials: true,
-}));
+// Middleware để parse JSON
 app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cookie_parser_1.default)());
-/* ================= Routes ================= */
-app.get("/health", (_req, res) => {
-    res.json({ status: "ok" });
-});
-app.get("/", (_req, res) => {
-    res.json({
-        name: "VendorHub API",
-        status: "running",
-        env: process.env.NODE_ENV,
-    });
-});
-/* ================= START SERVER ================= */
-/**
- * 🔥 CỰC KỲ QUAN TRỌNG
- * Docker / Node chỉ sống khi có listen
- */
-const PORT = Number(process.env.PORT) || 8080;
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+// Routes
+app.use("/auth", auth_route_1.default);
+// Error handler phải đặt cuối cùng
+app.use(error_middleware_1.errorHandler);
+// Chạy server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
