@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const auth_route_1 = __importDefault(require("@/route/auth/auth.route"));
+const auth_route_1 = __importDefault(require("./route/auth/auth.route"));
 const error_middleware_1 = require("./middlewares/error.middleware");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();

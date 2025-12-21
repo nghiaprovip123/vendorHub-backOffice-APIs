@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const user_model_1 = require("@/models/user.model");
-const ApiError_1 = __importDefault(require("@/utils/ApiError"));
+const user_model_1 = require("../../models/user.model");
+const ApiError_1 = __importDefault(require("../../utils/ApiError"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.authService = {
     register: async ({ email, password, userName }) => {

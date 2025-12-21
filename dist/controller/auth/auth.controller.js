@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authController = void 0;
 const http_status_codes_1 = require("http-status-codes");
-const auth_service_1 = require("@/services/auth/auth.service");
+const auth_service_1 = require("../../services/auth/auth.service");
 const register = async (req, res, next) => {
     try {
         const result = await auth_service_1.authService.register(req.body);
