@@ -12,7 +12,7 @@ export const loginController = async ( req: Request, res: Response, next: NextFu
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            path: 'auth/refresh-token'
+            path: '/'
         })
 
         res.status(201).json(

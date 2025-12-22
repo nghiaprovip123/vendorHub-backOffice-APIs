@@ -1,5 +1,6 @@
 import express from "express";
 import router  from "@/route/auth/auth.route"
+import cookieParser from "cookie-parser"
 import { errorHandler } from "./middlewares/error.middleware";
 import dotenv from "dotenv";
 dotenv.config();
@@ -9,6 +10,7 @@ const app = express();
 
 // Middleware để parse JSON
 app.use(express.json());
+app.use(cookieParser())
 
 // Routes
 app.use("/auth", router);

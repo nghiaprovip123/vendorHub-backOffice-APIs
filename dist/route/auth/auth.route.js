@@ -2,9 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth_validation_1 = require("../../validation/auth/auth.validation");
-const auth_controller_1 = require("../../controller/auth/auth.controller");
+const register_controller_1 = require("../../controller/auth/register.controller");
+const login_controller_1 = require("../../controller/auth/login.controller");
+const refreshToken_controller_1 = require("../../controller/auth/refreshToken.controller");
 const validate_middleware_1 = require("../../middlewares/validate.middleware");
 const router = (0, express_1.Router)();
-router.post("/register", (0, validate_middleware_1.validate)(auth_validation_1.authSchema.register), auth_controller_1.authController.register);
-router.post("/login", (0, validate_middleware_1.validate)(auth_validation_1.authSchema.login), auth_controller_1.authController.login);
+router.post("/register", (0, validate_middleware_1.validate)(auth_validation_1.authSchema.register), register_controller_1.registerController);
+router.post("/login", (0, validate_middleware_1.validate)(auth_validation_1.authSchema.register), login_controller_1.loginController);
+router.post("/refresh-token", refreshToken_controller_1.refreshTokenController);
 exports.default = router;
