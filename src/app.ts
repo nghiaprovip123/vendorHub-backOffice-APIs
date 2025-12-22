@@ -1,16 +1,23 @@
 import express from "express";
 import router  from "@/route/auth/auth.route"
 import cookieParser from "cookie-parser"
-import { errorHandler } from "./middlewares/error.middleware";
-import dotenv from "dotenv";
+import { errorHandler } from "./middlewares/error.middleware"
+import dotenv from "dotenv"
+import cors from 'cors'
+
 dotenv.config();
 
 const PORT = Number(process.env.PORT) || 3000;
 const app = express();
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 // Middleware để parse JSON
 app.use(express.json());
 app.use(cookieParser())
+
 
 // Routes
 app.use("/auth", router);
