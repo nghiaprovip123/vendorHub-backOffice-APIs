@@ -4,7 +4,10 @@ import { registerController } from '@/controller/auth/register.controller';
 import { loginController } from '@/controller/auth/login.controller';
 import { refreshTokenController } from '@/controller/auth/refreshToken.controller'
 import { logoutController } from '@/controller/auth/logout.controller'
+<<<<<<< HEAD
 import { googleRedirectController } from '@/controller/auth/googleRedirect.controller'
+=======
+>>>>>>> d4cf2bcc4b5d6fda7fb1ea774f277a433ee9da95
 import { validate } from '@/middlewares/validate.middleware';
 import { googleAuthController } from '@/controller/auth/callback/google/googleAuth.controller'
 const router = Router();
@@ -38,6 +41,7 @@ router.post(
 // ============================================
 // auth/logout
 // ============================================
+<<<<<<< HEAD
 router.post(
     "/logout",
     logoutController
@@ -57,6 +61,11 @@ router.get(
 router.get(
     "/callback/google",
     googleAuthController
+=======
+router.get(
+    "/logout",
+    logoutController
+>>>>>>> d4cf2bcc4b5d6fda7fb1ea774f277a433ee9da95
 )
 
 export default router;
