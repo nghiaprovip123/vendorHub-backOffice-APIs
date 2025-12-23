@@ -1,13 +1,13 @@
-import Joi from "joi";
+import * as z from "zod";
 
 export const authSchema = {
-    register: Joi.object({
-        email: Joi.string().email().required(),
-        password: Joi.string().min(8).required(),
-        userName: Joi.string().optional()
+    register: z.object({
+        email: z.email(),
+        password: z.string().min(8),
+        userName: z.string().optional()
     }),
-    login: Joi.object({
-        email: Joi.string().email().required(),
-        password: Joi.string().min(6).required(),
+    login: z.object({
+        email: z.email(),
+        password: z.string().min(8),
     })
 };

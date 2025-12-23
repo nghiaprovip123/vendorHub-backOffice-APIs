@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import bcrypt from "bcryptjs"
+import { authSchema } from "@/validation/auth/auth.validation"
+import * as z from 'zod'
 
-type loginType = {
-    email: string
-    password: string
-}
+type loginType = z.infer<typeof authSchema.login>;
+
 
 export const login = async ({email, password}: loginType) => {
     const user = await prisma.user.findUnique(

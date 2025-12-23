@@ -73,7 +73,7 @@ export const googleAuth = async ({ code }: GoogleAuthInput) => {
           data: {
             email: userInfo.email,
             name: userInfo.userName ?? "",
-            password: "", 
+            password: "", // OAuth user → no password
           },
         });
     }
@@ -95,5 +95,5 @@ export const googleAuth = async ({ code }: GoogleAuthInput) => {
         data: { refreshToken },
     });
 
-    return { refreshToken, accessToken }
+    return { accessToken, refreshToken }
 }
