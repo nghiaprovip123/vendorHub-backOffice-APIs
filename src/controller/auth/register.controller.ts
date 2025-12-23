@@ -12,7 +12,7 @@ export const registerController = async (
         const controllerResponse = await register(body)
 
         return res.json(
-            { message: "Create the account sucessfully", accountInfo: controllerResponse  }
+            { message: "Create the account sucessfully" }
         )
     }
     catch(error) {
