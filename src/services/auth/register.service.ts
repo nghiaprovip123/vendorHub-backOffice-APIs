@@ -1,12 +1,10 @@
 import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { prisma } from "@/lib/prisma"
+import * as z from 'zod'
+import { authSchema } from '@/validation/auth/auth.validation'
 
-type registerType = {
-    email: string,
-    password: string,
-    userName?: string,
-}
+type registerType = z.infer<typeof authSchema.register>;
 
 export const register = async ({ email, password, userName }: registerType) => {
     const checkUser = await prisma.user.findUnique(
@@ -35,4 +33,3 @@ export const register = async ({ email, password, userName }: registerType) => {
 }
 
 export default register; 
- 
