@@ -292,8 +292,8 @@ model ProductVariant {
 
 model VariantMedia {
   id        String         @id @map("_id") @default(auto()) @db.ObjectId
-  variantId String?         @db.ObjectId
-  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  variantId String         @db.ObjectId
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
   
   url       String
   alt       String?
