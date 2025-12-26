@@ -262,7 +262,7 @@ model ProductVariant {
   sku         String   @unique  
   name        String  
 
-  attributes  Json     
+  attributes  Json?    
   
   price       Float
   costPrice   Float
@@ -280,8 +280,8 @@ model ProductVariant {
 
   weight      Float?  
   
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
   
   @@index([productId])
   @@index([warehouseId])
