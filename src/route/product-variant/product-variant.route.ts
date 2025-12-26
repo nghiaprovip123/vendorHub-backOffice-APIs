@@ -12,7 +12,7 @@ const upload = multer( {storage} )
 // ============================================
 ProductVariantRouter.post(
   "/variant-images",
-  upload.single('file'),
+  upload.array('file', 5),
   variantImageController
 )
 
