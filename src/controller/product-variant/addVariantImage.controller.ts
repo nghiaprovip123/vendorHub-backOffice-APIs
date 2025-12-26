@@ -8,8 +8,10 @@ export const variantImageController = async (
 ) => {
   try {
     const files = req.files as Express.Multer.File[];
+    const body = req.body;
+    const { variantId }  = body;
 
-    const controllerResponse =  await variantImage(files)
+    const controllerResponse =  await variantImage(files, variantId)
     
     return res.status(200).json(
         {
