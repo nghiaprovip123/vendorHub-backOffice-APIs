@@ -1,6 +1,6 @@
 import express from "express";
 import router  from "@/route/auth/auth.route"
-import ProductVariantRouter from '@/route/product-variant/product-variant.route'
+import ProductVariantRouter from '@/route/product-variant/productVariant.route'
 import cookieParser from "cookie-parser"
 import { errorHandler } from "./middlewares/error.middleware"
 import dotenv from "dotenv"
