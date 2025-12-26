@@ -1,17 +1,19 @@
 import cloudinary from "@/utils/cloudinaryConfig";
 import streamifier from "streamifier";
 import ApiError from "@/utils/ApiError";
+import { prisma } from "@/lib/prisma";
 
-export const variantImage = (
-  file: Express.Multer.File[] | undefined
+export const variantImage = async (
+  files: Express.Multer.File[] | undefined,
+  variantId: string 
 ): Promise<{ url: string; public_id: string }[]> => {
-  if (!file) {
-    throw new ApiError(400, "File is required!");
+  
+  if (!files || files.length === 0) {
+    throw new ApiError(400, "Files are required!");
   }
 
-  // Using map to handle multiple files, if necessary
-  return Promise.all(
-    file.map((c) => {
+  const uploadResults = await Promise.all(
+    files.map((file) => {
       return new Promise<{ url: string; public_id: string }>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
@@ -19,24 +21,26 @@ export const variantImage = (
             resource_type: "image",
           },
           (error, result) => {
-            if (error) {
+            if (error || !result) {
               return reject(new ApiError(500, "Upload to Cloudinary Failed!"));
             }
-
-            if (!result) {
-              return reject(new ApiError(500, "No Result from Cloudinary"));
-            }
-
             resolve({
               url: result.secure_url,
               public_id: result.public_id,
             });
           }
         );
-
-        // Convert buffer to a readable stream and pipe to Cloudinary's upload stream
-        streamifier.createReadStream(c.buffer).pipe(uploadStream);
+        streamifier.createReadStream(file.buffer).pipe(uploadStream);
       });
     })
   );
+
+  await prisma.variantMedia.createMany({
+    data: uploadResults.map((img) => ({
+      url: img.url,
+      variantId: variantId, 
+    })),
+  });
+
+  return uploadResults;
 };
