@@ -2,6 +2,8 @@ import { Router } from 'express'
 import { variantImageController } from '@/controller/product-variant/addVariantImage.controller'
 import multer from 'multer'
 import { addVariantController } from "@/controller/product-variant/addVariant.controller"
+import { productVariantSchema } from "@/validation/product-variant/productVariant.validation"
+import { validate } from '@/middlewares/validate.middleware';
 
 const ProductVariantRouter = Router();
 
@@ -19,6 +21,7 @@ ProductVariantRouter.post(
 
 ProductVariantRouter.post(
   "/add-variant",
+  validate(productVariantSchema.variant),
   addVariantController
 )
 
