@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { variantImageController } from '@/controller/product-variant/addVariantImage.controller'
 import multer from 'multer'
 import { addVariantController } from "@/controller/product-variant/addVariant.controller"
+import { updateVariantController } from "@/controller/product-variant/updateVariant.controller"
 import { productVariantSchema } from "@/validation/product-variant/productVariant.validation"
 import { validate } from '@/middlewares/validate.middleware';
 
@@ -22,6 +23,12 @@ ProductVariantRouter.post(
   "/add-variant",
   validate(productVariantSchema.variant),
   addVariantController
+)
+
+ProductVariantRouter.patch(
+  "/update-variant/:id",
+  validate(productVariantSchema.variant),
+  updateVariantController
 )
 
 export default ProductVariantRouter;
