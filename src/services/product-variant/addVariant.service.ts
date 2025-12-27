@@ -3,7 +3,7 @@ import ApiError from "@/utils/ApiError"
 import * as z from 'zod'
 import { productVariantSchema } from '@/validation/product-variant/productVariant.validation'
 
-type addVariantType = z.infer< typeof productVariantSchema.variant >
+type addVariantType = z.infer< typeof productVariantSchema.CreateUpdateVariant >
 
 export const addVariant = async (
     {

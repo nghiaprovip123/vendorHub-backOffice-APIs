@@ -259,7 +259,7 @@ model ProductVariant {
   productId   String   @db.ObjectId
   product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   
-  sku         String   @unique  
+  sku         String?     
   name        String  
 
   attributes  Json?    
