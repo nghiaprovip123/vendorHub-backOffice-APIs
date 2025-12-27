@@ -50,8 +50,8 @@ export const productVariantSchema = {
             weight: z
                 .number()
                 .positive("weight must be greater than 0")
-                    }
-                ),
+        }
+    ),
     variantImage: z.object(
         {
             url: z.

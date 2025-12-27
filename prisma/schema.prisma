@@ -274,7 +274,7 @@ model ProductVariant {
   lowStock    Int      @default(10)
   
   status      VariantStatus @default(ACTIVE)
-  isPublished Boolean  @default(false)
+  isPublished Boolean  @default(true)
   
   medias      VariantMedia[]
 

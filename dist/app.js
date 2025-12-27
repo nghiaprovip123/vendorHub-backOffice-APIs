@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const auth_route_1 = __importDefault(require("./route/auth/auth.route"));
+const productVariant_route_1 = __importDefault(require("./route/product-variant/productVariant.route"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const error_middleware_1 = require("./middlewares/error.middleware");
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -21,6 +22,7 @@ app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // Routes
 app.use("/auth", auth_route_1.default);
+app.use("/product-variant", productVariant_route_1.default);
 // Error handler phải đặt cuối cùng
 app.use(error_middleware_1.errorHandler);
 // Chạy server
