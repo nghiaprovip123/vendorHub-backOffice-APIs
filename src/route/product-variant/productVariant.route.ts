@@ -18,13 +18,17 @@ ProductVariantRouter.post(
   upload.array('file', 5),
   variantImageController
 )
-
+// ============================================
+// product-variant/add-variant
+// ============================================
 ProductVariantRouter.post(
   "/add-variant",
   validate(productVariantSchema.variant),
   addVariantController
 )
-
+// ============================================
+// product-variant/update-variant/:id
+// ============================================
 ProductVariantRouter.patch(
   "/update-variant/:id",
   validate(productVariantSchema.variant),
