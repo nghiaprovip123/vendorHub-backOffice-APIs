@@ -12,8 +12,7 @@ export const addVariantController = async( req: Request, res: Response, next: Ne
             }
         )
     }
-    catch(error)
-    {
+    catch(error) {
         next(error)
     }
 }
