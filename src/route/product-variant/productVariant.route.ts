@@ -6,6 +6,8 @@ import { updateVariantController } from "@/controller/product-variant/updateVari
 import { productVariantSchema } from "@/validation/product-variant/productVariant.validation"
 import { validate } from '@/middlewares/validate.middleware';
 import { cloneVariantController } from "@/controller/product-variant/cloneVariant.controller"
+import { deleteVariantController } from "@/controller/product-variant/deleteVariant.controller"
+
 const ProductVariantRouter = Router();
 const storage = multer.memoryStorage();
 const upload = multer( {storage} )
@@ -42,5 +44,13 @@ ProductVariantRouter.post(
   validate(productVariantSchema.CloneVariant),
   cloneVariantController
 )
+// ============================================
+// product-variant/delete-variant/:id
+// ============================================
+ProductVariantRouter.delete(
+  "/delete-variant/:id",
+  deleteVariantController
+)
+
 
 export default ProductVariantRouter;

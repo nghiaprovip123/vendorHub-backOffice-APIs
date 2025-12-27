@@ -1,40 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cloneVariantController = void 0;
-const prisma_1 = require("../../lib/prisma");
+const cloneVariant_service_1 = require("../../services/product-variant/cloneVariant.service");
 const cloneVariantController = async (req, res, next) => {
     try {
         const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({
-                message: "Missing ID Information"
-            });
-        }
-        const findNeededCloneVariant = await prisma_1.prisma.productVariant.findUnique({
-            where: { id }
-        });
-        if (!findNeededCloneVariant) {
-            return res.status(400).json({
-                message: "Missing Required Information"
-            });
-        }
-        const createCloneVariant = await prisma_1.prisma.productVariant.create({
-            data: {
-                productId: findNeededCloneVariant?.productId,
-                name: findNeededCloneVariant?.name,
-                price: findNeededCloneVariant?.price,
-                costPrice: findNeededCloneVariant?.costPrice,
-                oldPrice: findNeededCloneVariant?.oldPrice,
-                warehouseId: findNeededCloneVariant?.warehouseId,
-                quantity: findNeededCloneVariant?.quantity,
-                lowStock: findNeededCloneVariant?.lowStock,
-                isPublished: findNeededCloneVariant?.isPublished,
-                weight: findNeededCloneVariant?.weight,
-            }
-        });
+        const responseController = await (0, cloneVariant_service_1.cloneVariant)(id);
         return res.status(200).json({
             message: "Clone Successfully Variant!",
-            cloneEntity: createCloneVariant
+            cloneEntity: responseController
         });
     }
     catch (error) {
