@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { prisma } from "@/lib/prisma"
+import { updateVariant } from "@/services/product-variant/updateVariant.service"
 
 export const updateVariantController =  async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -21,33 +21,27 @@ export const updateVariantController =  async (req: Request, res: Response, next
             weight
         } = body
 
-        const updateVariant = await prisma.productVariant.update(
-            {
-                where: {id},
-                data: {
-                    productId,
-                    sku,
-                    name,
-                    price,
-                    costPrice,
-                    oldPrice,
-                    warehouseId,
-                    quantity,
-                    lowStock,
-                    isPublished,
-                    weight           
-                }
-            }
-        )
+        const responseController = await updateVariant(id, {
+            productId,
+            sku,
+            name,
+            price,
+            costPrice,
+            oldPrice,
+            warehouseId,
+            quantity,
+            lowStock,
+            isPublished,
+            weight
+        })
 
         return res.status(201).json(
             {
-                message: "Update Product Variant Successfulyy",
-                data: updateVariant
+                message: "Update Successfully a Variant",
+                data: responseController
             }
         )
     }
-    
     catch (error) {
         next(error)
     }
