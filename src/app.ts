@@ -1,6 +1,7 @@
 import express from "express";
 import router  from "@/route/auth/auth.route"
 import ProductVariantRouter from '@/route/product-variant/productVariant.route'
+import CategoryRoute from '@/route/category/category.route'
 import cookieParser from "cookie-parser"
 import { errorHandler } from "./middlewares/error.middleware"
 import dotenv from "dotenv"
@@ -23,6 +24,7 @@ app.use(cookieParser())
 // Routes
 app.use("/auth", router);
 app.use("/product-variant", ProductVariantRouter);
+app.use("/category-attribute", CategoryRoute)
 
 
 // Error handler phải đặt cuối cùng

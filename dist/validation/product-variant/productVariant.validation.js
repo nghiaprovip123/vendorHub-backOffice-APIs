@@ -33,16 +33,56 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authSchema = void 0;
+exports.productVariantSchema = void 0;
 const z = __importStar(require("zod"));
-exports.authSchema = {
-    register: z.object({
-        email: z.email(),
-        password: z.string().min(8),
-        userName: z.string().optional()
+exports.productVariantSchema = {
+    variant: z.object({
+        productId: z
+            .string()
+            .min(1, "productId is required"),
+        sku: z
+            .string()
+            .min(1, "sku is required"),
+        name: z
+            .string()
+            .min(1, "name is required"),
+        price: z
+            .number()
+            .positive("price must be greater than 0"),
+        costPrice: z
+            .number()
+            .nonnegative("costPrice must be >= 0"),
+        oldPrice: z
+            .number()
+            .nonnegative("oldPrice must be >= 0"),
+        warehouseId: z
+            .string()
+            .min(1, "warehouseId is required"),
+        quantity: z
+            .number()
+            .int("quantity must be an integer")
+            .nonnegative()
+            .default(0),
+        lowStock: z
+            .number()
+            .int("lowStock must be an integer")
+            .nonnegative()
+            .default(10),
+        isPublished: z
+            .boolean()
+            .default(false),
+        weight: z
+            .number()
+            .positive("weight must be greater than 0")
     }),
-    login: z.object({
-        email: z.email(),
-        password: z.string().min(8),
+    variantImage: z.object({
+        url: z.
+            url(),
+        variantId: z.
+            string(),
+    }),
+    fileImage: z.object({
+        file: z.
+            file(),
     })
 };

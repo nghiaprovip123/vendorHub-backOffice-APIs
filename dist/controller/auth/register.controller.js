@@ -6,7 +6,7 @@ const registerController = async (req, res, next) => {
     try {
         const body = req.body;
         const controllerResponse = await (0, register_service_1.register)(body);
-        return res.json({ message: "Create the account sucessfully", accountInfo: controllerResponse });
+        return res.json({ message: "Create the account sucessfully" });
     }
     catch (error) {
         next(error);

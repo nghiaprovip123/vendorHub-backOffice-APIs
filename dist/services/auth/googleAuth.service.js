@@ -44,7 +44,7 @@ const googleAuth = async ({ code }) => {
             data: {
                 email: userInfo.email,
                 name: userInfo.userName ?? "",
-                password: "",
+                password: "", // OAuth user → no password
             },
         });
     }
@@ -54,6 +54,6 @@ const googleAuth = async ({ code }) => {
         where: { id: user.id },
         data: { refreshToken },
     });
-    return { refreshToken, accessToken };
+    return { accessToken, refreshToken };
 };
 exports.googleAuth = googleAuth;
