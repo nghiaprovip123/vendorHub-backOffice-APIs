@@ -5,7 +5,7 @@ import { addVariantController } from "@/controller/product-variant/addVariant.co
 import { updateVariantController } from "@/controller/product-variant/updateVariant.controller"
 import { productVariantSchema } from "@/validation/product-variant/productVariant.validation"
 import { validate } from '@/middlewares/validate.middleware';
-
+import { cloneVariantController } from "@/controller/product-variant/cloneVariant.controller"
 const ProductVariantRouter = Router();
 const storage = multer.memoryStorage();
 const upload = multer( {storage} )
@@ -23,7 +23,7 @@ ProductVariantRouter.post(
 // ============================================
 ProductVariantRouter.post(
   "/add-variant",
-  validate(productVariantSchema.variant),
+  validate(productVariantSchema.CreateUpdateVariant),
   addVariantController
 )
 // ============================================
@@ -31,8 +31,16 @@ ProductVariantRouter.post(
 // ============================================
 ProductVariantRouter.patch(
   "/update-variant/:id",
-  validate(productVariantSchema.variant),
+  validate(productVariantSchema.CreateUpdateVariant),
   updateVariantController
+)
+// ============================================
+// product-variant/clone-variant/:id
+// ============================================
+ProductVariantRouter.post(
+  "/clone-variant/:id",
+  validate(productVariantSchema.CloneVariant),
+  cloneVariantController
 )
 
 export default ProductVariantRouter;
