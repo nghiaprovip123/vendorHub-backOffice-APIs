@@ -2,8 +2,8 @@ version: "3.9"
 
 services:
   api:
+    image: edogawatr/vendorhub-backoffice-image-repos:latest
     container_name: vendorhub-backoffice-api
-    build: .
     ports:
       - "8080:8080"
     environment:
