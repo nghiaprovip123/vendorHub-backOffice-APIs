@@ -10,6 +10,8 @@ const addVariant_controller_1 = require("../../controller/product-variant/addVar
 const updateVariant_controller_1 = require("../../controller/product-variant/updateVariant.controller");
 const productVariant_validation_1 = require("../../validation/product-variant/productVariant.validation");
 const validate_middleware_1 = require("../../middlewares/validate.middleware");
+const cloneVariant_controller_1 = require("../../controller/product-variant/cloneVariant.controller");
+const deleteVariant_controller_1 = require("../../controller/product-variant/deleteVariant.controller");
 const ProductVariantRouter = (0, express_1.Router)();
 const storage = multer_1.default.memoryStorage();
 const upload = (0, multer_1.default)({ storage });
@@ -20,9 +22,17 @@ ProductVariantRouter.post("/add-variant-images", upload.array('file', 5), addVar
 // ============================================
 // product-variant/add-variant
 // ============================================
-ProductVariantRouter.post("/add-variant", (0, validate_middleware_1.validate)(productVariant_validation_1.productVariantSchema.variant), addVariant_controller_1.addVariantController);
+ProductVariantRouter.post("/add-variant", (0, validate_middleware_1.validate)(productVariant_validation_1.productVariantSchema.CreateUpdateVariant), addVariant_controller_1.addVariantController);
 // ============================================
 // product-variant/update-variant/:id
 // ============================================
-ProductVariantRouter.patch("/update-variant/:id", (0, validate_middleware_1.validate)(productVariant_validation_1.productVariantSchema.variant), updateVariant_controller_1.updateVariantController);
+ProductVariantRouter.patch("/update-variant/:id", (0, validate_middleware_1.validate)(productVariant_validation_1.productVariantSchema.CreateUpdateVariant), updateVariant_controller_1.updateVariantController);
+// ============================================
+// product-variant/clone-variant/:id
+// ============================================
+ProductVariantRouter.post("/clone-variant/:id", (0, validate_middleware_1.validate)(productVariant_validation_1.productVariantSchema.CloneVariant), cloneVariant_controller_1.cloneVariantController);
+// ============================================
+// product-variant/delete-variant/:id
+// ============================================
+ProductVariantRouter.delete("/delete-variant/:id", deleteVariant_controller_1.deleteVariantController);
 exports.default = ProductVariantRouter;
