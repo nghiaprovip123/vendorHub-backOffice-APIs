@@ -1,12 +1,15 @@
 import { Request, Response, NextFunction } from "express"
-import { prisma } from "@/lib/prisma"
 import { cloneVariant } from "@/services/product-variant/cloneVariant.service"
 
 export const cloneVariantController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
 
-        const responseController = await cloneVariant(id)
+        const sku = String(req.body.sku).trim();
+ 
+        console.log("Received id:", id, "Received sku:", sku);  
+
+        const responseController = await cloneVariant(id, sku) 
         
         return res.status(200).json(
             {

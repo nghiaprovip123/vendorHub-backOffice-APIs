@@ -1,10 +1,9 @@
-import { Request, Response, NextFunction } from "express"
 import { prisma } from "@/lib/prisma"
 import ApiError from "@/utils/ApiError"
 
-export const cloneVariant = async (id: string) => {
-    if(!id) {
-        throw new ApiError(400, "Missing Need-to-Clone Variant ID")
+export const cloneVariant = async (id: string, sku: string) => {
+    if(!id || !sku) {
+        throw new ApiError(400, "Missing Need-to-Clone Variant ID and Sku Input")
     }
     
     const findNeededCloneVariant  = await prisma.productVariant.findUnique(
@@ -21,6 +20,7 @@ export const cloneVariant = async (id: string) => {
         {
             data: {
                 productId: findNeededCloneVariant?.productId,
+                sku: sku,
                 name: findNeededCloneVariant?.name,
                 price: findNeededCloneVariant?.price,
                 costPrice: findNeededCloneVariant?.costPrice,
