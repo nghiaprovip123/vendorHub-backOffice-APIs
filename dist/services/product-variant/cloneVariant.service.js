@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.cloneVariant = void 0;
 const prisma_1 = require("../../lib/prisma");
 const ApiError_1 = __importDefault(require("../../utils/ApiError"));
-const cloneVariant = async (id) => {
-    if (!id) {
-        throw new ApiError_1.default(400, "Missing Need-to-Clone Variant ID");
+const cloneVariant = async (id, sku) => {
+    if (!id || !sku) {
+        throw new ApiError_1.default(400, "Missing Need-to-Clone Variant ID and Sku Input");
     }
     const findNeededCloneVariant = await prisma_1.prisma.productVariant.findUnique({
         where: { id }
@@ -19,6 +19,7 @@ const cloneVariant = async (id) => {
     const createCloneVariant = await prisma_1.prisma.productVariant.create({
         data: {
             productId: findNeededCloneVariant?.productId,
+            sku: sku,
             name: findNeededCloneVariant?.name,
             price: findNeededCloneVariant?.price,
             costPrice: findNeededCloneVariant?.costPrice,
