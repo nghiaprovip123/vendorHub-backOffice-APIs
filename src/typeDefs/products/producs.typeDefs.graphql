@@ -1,0 +1,101 @@
+# ================================
+# ENUM
+# ================================
+enum PricingType {
+  FIXED
+  HIDDEN
+  DYNAMIC
+  STAFF_TIERED
+  QUOTE_BASED
+}
+
+
+# ================================
+# INPUT
+# ================================
+input CreateProductsInput {
+  id: ID!
+  tenantId: String
+  userId: String
+  sellerId: String
+
+  code: String
+  title: String
+  description: String
+  slug: String
+
+  tags: [String!]!
+
+  pricingType: PricingType
+  currency: String
+  displayPrice: Boolean
+
+  taxIncluded: Boolean
+  taxRateBps: Int
+
+  durationMin: Int
+  bufferBeforeMin: Int
+  bufferAfterMin: Int
+
+  minStaffCount: Int
+  maxStaffCount: Int
+
+  isBookable: Boolean
+  requiresDeposit: Boolean
+  depositAmount: Float
+
+  featured: Boolean
+  badge: String
+  highlightColor: String
+  displayOrder: Int
+  isActive: Boolean
+
+  metaTitle: String
+  metaDescription: String
+}
+
+# ================================
+# TYPE OUTPUT
+# ================================
+type Product {
+  id: ID!
+  title: String
+  slug: String
+  description: String
+  tags: [String!]!
+  pricingType: PricingType
+  currency: String
+  displayPrice: Boolean
+  taxIncluded: Boolean
+  taxRateBps: Int
+  durationMin: Int
+  bufferBeforeMin: Int
+  bufferAfterMin: Int
+  minStaffCount: Int
+  maxStaffCount: Int
+  isBookable: Boolean
+  requiresDeposit: Boolean
+  depositAmount: Float
+  featured: Boolean
+  badge: String
+  highlightColor: String
+  displayOrder: Int
+  isActive: Boolean
+  metaTitle: String
+  metaDescription: String
+  createdAt: String
+  updatedAt: String
+}
+
+type CreateProductResponse {
+  success: Boolean!
+  message: String!
+  product: Product
+}
+
+# ================================
+# MUTATION
+# ================================
+type Mutation {
+  createProducts(input: CreateProductsInput!): CreateProductResponse!
+}
