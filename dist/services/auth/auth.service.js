@@ -1,8 +1,8 @@
 "use strict";
 // import { StatusCodes } from "http-status-codes";
 // import bcrypt from "bcryptjs";
-// import { UserModel } from "@/models/user.model";
-// import ApiError from "@/utils/ApiError";
+// import { UserModel } from "../../models/user.model";
+// import ApiError from "../../utils/ApiError";
 // import jwt, { JwtPayload } from "jsonwebtoken"
 // interface RegisterInput {
 //     email: string;

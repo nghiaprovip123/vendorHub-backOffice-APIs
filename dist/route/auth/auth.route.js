@@ -1,8 +1,8 @@
 "use strict";
 // import { Router } from 'express'
-// import { authSchema } from '@/validation/auth/auth.validation'
-// import { authController } from '@/controller/auth/auth.controller';
-// import { validate } from '@/middlewares/validate.middleware';
+// import { authSchema } from '../../validation/auth/auth.validation'
+// import { authController } from '../../controller/auth/auth.controller';
+// import { validate } from '../../middlewares/validate.middleware';
 // const router = Router();
 // router.post(
 //     "/register",

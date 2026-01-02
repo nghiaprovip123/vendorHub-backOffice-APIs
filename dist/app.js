@@ -27,8 +27,8 @@ dotenv_1.default.config();
     const app = (0, express_1.default)();
     const httpServer = (0, http_1.createServer)(app);
     app.use((0, cors_1.default)({
-        origin: 'http://localhost:3000', // Frontend của bạn
-        credentials: true, // cho phép gửi cookie
+        origin: true, // hoặc '*'
+        credentials: true,
     }));
     const schema = (0, schema_1.makeExecutableSchema)({ typeDefs: typeDefs_1.typeDefs, resolvers: mergeResolvers_1.resolvers });
     // ws Server

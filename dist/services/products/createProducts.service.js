@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProductsService = void 0;
-const product_model_1 = require("@/models/product.model");
+const product_model_1 = require("../../models/product.model");
 const createProductsService = (data) => {
     const now = new Date();
     const finalData = {

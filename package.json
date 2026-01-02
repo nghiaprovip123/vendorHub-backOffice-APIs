@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --watch src --ext ts,json --exec \"tsx src/app.ts\"",
-    "build": "tsc && cpx \"src/typeDefs/**/*.graphql\" dist/typeDefs",
+    "build": "tsc && tsc-alias && cpx \"src/typeDefs/**/*.graphql\" dist/typeDefs",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
@@ -62,6 +62,7 @@
     "nodemon": "^3.0.2",
     "prisma": "^6.19.0",
     "ts-jest": "^29.1.1",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.7.0",
     "typescript": "^5"
   }

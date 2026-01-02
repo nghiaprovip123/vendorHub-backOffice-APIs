@@ -29,9 +29,10 @@ dotenv.config();
         description: string
     }
     app.use(cors({
-        origin: 'http://localhost:3000', // Frontend của bạn
-        credentials: true, // cho phép gửi cookie
+      origin: true, // hoặc '*'
+      credentials: true,
     }));
+    
     const schema = makeExecutableSchema({ typeDefs, resolvers: resolvers });
 
     // ws Server

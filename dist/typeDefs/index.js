@@ -4,12 +4,14 @@ exports.typeDefs = void 0;
 const merge_1 = require("@graphql-tools/merge");
 const fs_1 = require("fs");
 const path_1 = require("path");
-const typeDefsDir = (0, path_1.join)(process.cwd(), "src/typeDefs");
-// Lấy tất cả file .graphql trong thư mục typeDefs và các subfolder
+// __dirname sẽ là:
+// - src/typeDefs khi dev
+// - dist/typeDefs khi build
+const typeDefsDir = __dirname;
 function getGraphqlFiles(dir) {
     let results = [];
     const list = (0, fs_1.readdirSync)(dir, { withFileTypes: true });
-    list.forEach((file) => {
+    for (const file of list) {
         const filePath = (0, path_1.join)(dir, file.name);
         if (file.isDirectory()) {
             results = results.concat(getGraphqlFiles(filePath));
@@ -17,11 +19,9 @@ function getGraphqlFiles(dir) {
         else if (file.name.endsWith(".graphql")) {
             results.push(filePath);
         }
-    });
+    }
     return results;
 }
 const schemaFiles = getGraphqlFiles(typeDefsDir);
-// Đọc nội dung từng file
-const schemas = schemaFiles.map((filePath) => (0, fs_1.readFileSync)(filePath, { encoding: "utf-8" }));
-// Merge tất cả schema lại
+const schemas = schemaFiles.map((filePath) => (0, fs_1.readFileSync)(filePath, "utf-8"));
 exports.typeDefs = (0, merge_1.mergeTypeDefs)(schemas);

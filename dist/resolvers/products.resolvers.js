@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productResolver = void 0;
 // resolvers/product.resolver.ts
-const createProducts_service_1 = require("@/services/products/createProducts.service");
-const products_validation_1 = require("@/validation/products/products.validation");
+const createProducts_service_1 = require("../services/products/createProducts.service");
+const products_validation_1 = require("../validation/products/products.validation");
 exports.productResolver = {
     Mutation: {
         createProducts: async (_, args, ctx) => {
