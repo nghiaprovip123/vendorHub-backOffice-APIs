@@ -1,36 +1,75 @@
-import express from "express";
-import router  from "@/route/auth/auth.route"
-import ProductVariantRouter from '@/route/product-variant/productVariant.route'
-import CategoryRoute from '@/route/category/category.route'
-import cookieParser from "cookie-parser"
-import { errorHandler } from "./middlewares/error.middleware"
-import dotenv from "dotenv"
-import cors from 'cors'
+import { typeDefs } from './typeDefs';
+import express from 'express';
+import { createServer } from 'http';
+import { PubSub } from 'graphql-subscriptions';
+import gql from 'graphql-tag';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { expressMiddleware } from '@as-integrations/express4';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { resolvers } from './resolvers/mergeResolvers';
 
-dotenv.config();
+// Asnychronous Anonymous Function
+// Inside of server.ts -> await keyword
 
-const PORT = Number(process.env.PORT) || 3000;
-const app = express();
+( async function () {
+    // Server code in here!
+    const pubsub = new PubSub(); // Publish and Subscribe, Publish -> everyone gets to hear it
+    const app = express();
+    const httpServer = createServer(app);
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}));
-// Middleware để parse JSON
-app.use(express.json());
-app.use(cookieParser())
+    interface createNewsEventInput {
+        title: string
+        description: string
+    }
+    const schema = makeExecutableSchema({typeDefs, resolvers:resolvers});
+
+    // ws Server
+    const wsServer = new WebSocketServer({
+        server: httpServer,
+        path: "/graphql" // localhost:3000/graphql
+    });
+
+    const serverCleanup = useServer({ schema }, wsServer); // dispose
+
+    // apollo server
+    const server = new ApolloServer({
+        schema,
+        plugins: [
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+            {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            await serverCleanup.dispose();
+                        }
+                    }
+                }
+            }
+        ]
+    });
+
+    // start our server
+    await server.start();
+
+    // apply middlewares (cors, expressmiddlewares)
+    app.use('/graphql', cors<cors.CorsRequest>(), bodyParser.json(), expressMiddleware(server,{
+        context: async ({ req, res }) => ({
+      req,
+      res,
+      pubsub, // nếu cần cho subscriptions
+})
+    }));
+
+    // http server start
+    // http server start
+    httpServer.listen(4000, () => {
+        console.log("Server running on http://localhost:" + "4000" + "/graphql");
+    });
 
 
-// Routes
-app.use("/auth", router);
-app.use("/product-variant", ProductVariantRouter);
-app.use("/category-attribute", CategoryRoute)
-
-
-// Error handler phải đặt cuối cùng
-app.use(errorHandler);
-
-// Chạy server
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+})();
