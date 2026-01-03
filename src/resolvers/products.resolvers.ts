@@ -3,7 +3,8 @@ import { createProductsService } from "@/services/products/createProducts.servic
 import { PricingType } from "@prisma/client";
 import { createProductsValid } from "@/validation/products/products.validation";
 
-export const productResolver = {
+export const productResolver = 
+{
   Mutation: {
     createProducts: async (_: unknown, args: { input: any }, ctx: any) => {
       try {
@@ -23,3 +24,4 @@ export const productResolver = {
     },
   },
 };
+
