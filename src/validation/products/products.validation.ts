@@ -2,10 +2,13 @@ import { z } from "zod";
 import { PricingType } from "@prisma/client";
 export const createProductsValid = z
   .object({
-    id: z.string().min(1, "ID is required"),
+    tenantId: z.string().optional(),
+    userId: z.string().optional(),
+    sellerId: z.string().optional(),
+    code: z.string(),
     title: z.string().min(1, "Title is required"),
     slug: z.string().min(1, "Slug is required"),
-
+    description: z.string(),
     tags: z.array(z.string()).min(1, "At least one tag is required"),
 
     pricingType: z.nativeEnum(PricingType),

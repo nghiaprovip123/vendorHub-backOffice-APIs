@@ -7,27 +7,16 @@ export const productResolver = {
   Mutation: {
     createProducts: async (_: unknown, args: { input: any }, ctx: any) => {
       try {
-        const validatedInput = createProductsValid.parse(args.input);
-
-        const newProduct = await createProductsService(validatedInput);
-
-        ctx.res.status(201);
+        const Product = await createProductsService(args.input);
         return {
           success: true,
           message: "Product created successfully",
-          product: newProduct,
+          product: Product,
         };
       } catch (err: any) {
-        console.error("ERROR:", err);
-
-        ctx.res.status(400);
         return {
           success: false,
-          message: err?.issues
-            ? err.issues
-                .map((i: any) => `${i.path.join(".")}: ${i.message}`)
-                .join(", ")
-            : err.message || "Invalid input",
+          message: "Invalid input",
           product: null,
         };
       }
