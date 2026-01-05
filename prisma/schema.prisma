@@ -132,6 +132,7 @@ model Service {
   // --- Metadata ---
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  staff     staffService[]
 
   @@unique([tenantId, code])
   @@unique([tenantId, slug])
@@ -139,32 +140,6 @@ model Service {
   @@index([tenantId, isActive])
   @@index([tenantId, featured])
 }
-
-// ======================================================================
-// SERVICE VARIANT
-// ======================================================================
-// model ServiceVariant {
-//   id          String @id @map("_id") @default(auto()) @db.ObjectId
-
-//   tenantId    String? @db.ObjectId
-//   serviceId   String? @db.ObjectId
-//   service     Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-//   pricingType PricingType? @default(FIXED)
-//   name        String
-//   description String?
-
-//   durationMin Int?
-//   isDefault   Boolean? @default(false)
-//   displayOrder Int? @default(0)
-//   isActive    Boolean? @default(true)
-
-//   media       VariantMedia[]
-
-//   createdAt   DateTime @default(now())
-
-//   @@index([tenantId, serviceId])
-//   @@index([serviceId, isDefault])
-// }
 
 // ======================================================================
 // VARIANT MEDIA
@@ -239,4 +214,26 @@ model ServicePricingRule {
   createdAt DateTime @default(now())
 
   @@index([tenantId, serviceId])
+}
+
+model staffService {
+  id              String @id @map("_id") @default(auto()) @db.ObjectId
+  
+  staffId         String? @db.ObjectId
+  staff           Staff? @relation(fields: [staffId], references: [id])
+  
+  serviceId       String? @db.ObjectId
+  service         Service? @relation(fields: [serviceId], references: [id])
+  @@unique([staffId, serviceId])
+}
+
+model Staff {
+  id                String @id @map("_id") @default(auto()) @db.ObjectId
+  fullName          String?
+  avatar_url        String?
+  timezone          String?
+  workingHours      String[]
+  isActive          Boolean? @default(true)
+  isDeleted         Boolean? @default(false)
+  services          staffService[]
 }
