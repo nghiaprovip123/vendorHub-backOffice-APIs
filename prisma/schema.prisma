@@ -24,6 +24,11 @@ enum PricingType {
   QUOTE_BASED
 }
 
+enum CategoryLevel {
+  LEVEL_1
+  LEVEL_2
+}
+
 // ======================================================================
 // TENANT (MULTI-TENANT ROOT)
 // ======================================================================
@@ -236,4 +241,17 @@ model Staff {
   isActive          Boolean? @default(true)
   isDeleted         Boolean? @default(false)
   services          staffService[]
+}
+
+model Category {
+  id            String @id @map("_id") @default(auto()) @db.ObjectId
+  name          String? 
+  slug          String?
+  parentId      String?  @db.ObjectId
+  parent        Category? @relation("CategoryTree", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children      Category[] @relation("CategoryTree")
+  level         CategoryLevel
+  description   String?
+  displayOrder  Int? @default(0)
+  createAt      DateTime @default(now())
 }
