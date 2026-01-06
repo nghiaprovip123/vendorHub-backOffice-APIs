@@ -1,0 +1,41 @@
+scalar Upload
+
+type WorkingHour {
+  id: ID!
+  day: String!        
+  startTime: String!  
+  endTime: String!    
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Staff {
+  id: ID!
+  fullName: String!
+  avatar_url: String
+  timezone: String!
+  isActive: Boolean!
+  isDeleted: Boolean!
+  workingHours: [WorkingHour!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input WorkingHourInput {
+  day: String!
+  startTime: String!
+  endTime: String!
+}
+
+input CreateStaffInput {
+  fullName: String!
+  avatar: Upload
+  timezone: String! 
+  isActive: Boolean
+  isDeleted: Boolean
+  workingHours: [WorkingHourInput!]!
+}
+
+type Mutation {
+  createStaff(input: CreateStaffInput!): Staff!
+}
