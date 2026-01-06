@@ -1,3 +1,5 @@
+scalar Upload
+
 type WorkingHour {
   id: ID!
   day: String!        
@@ -26,7 +28,7 @@ input WorkingHourInput {
 
 input CreateStaffInput {
   fullName: String!
-  avatar_url: String
+  avatar: Upload
   timezone: String! 
   isActive: Boolean = true  
   isDeleted: Boolean = false  

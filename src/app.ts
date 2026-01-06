@@ -11,7 +11,8 @@ import { expressMiddleware } from '@as-integrations/express4';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { resolvers } from './resolvers/mergeResolvers';
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 // Asnychronous Anonymous Function
 // Inside of server.ts -> await keyword
@@ -62,7 +63,12 @@ dotenv.config();
 
     // start our server
     await server.start();
-
+    app.use(
+        graphqlUploadExpress({
+          maxFileSize: 5_000_000,
+          maxFiles: 1,
+        })
+      )
     // apply middlewares (cors, expressmiddlewares)
     app.use('/graphql', cors<cors.CorsRequest>(), bodyParser.json(), expressMiddleware(server, {
         context: async ({ req, res }) => ({
@@ -71,6 +77,7 @@ dotenv.config();
             pubsub, // nếu cần cho subscriptions
         })
     }));
+      
 
     // http server start
     // http server start
