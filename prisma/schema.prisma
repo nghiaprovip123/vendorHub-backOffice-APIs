@@ -242,6 +242,8 @@ model Staff {
   services          StaffService[]
   workingHours      WorkingHour[]
   
+  createdAt         DateTime @default(now())  // Added
+  updatedAt         DateTime @updatedAt       // Added
 }
 
 model WorkingHour {
@@ -249,8 +251,8 @@ model WorkingHour {
   day               String  
   startTime         String
   endTime           String
-  createAt          DateTime @default(now())
-  updateAt          DateTime @default(now())
+  createdAt         DateTime @default(now())  // Fixed from createAt
+  updatedAt         DateTime @updatedAt       // Fixed from updateAt
 
   staffId           String? @db.ObjectId 
   staff             Staff? @relation(fields: [staffId], references: [id], onDelete: Cascade)

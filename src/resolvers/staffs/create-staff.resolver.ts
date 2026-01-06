@@ -3,86 +3,64 @@ import { prisma } from "@/lib/prisma";
 import { uploadToCloudinary } from "@/utils/upload-helper";
 import { GraphQLUpload } from 'graphql-upload-minimal';
 
-interface FileUpload {
-  filename: string;
-  mimetype: string;
-  encoding: string;
-  createReadStream: () => NodeJS.ReadableStream;
-}
-
-interface WorkingHourInput {
-  day: string;
-  startTime: string;
-  endTime: string;
-}
-
-interface CreateStaffInput {
-  fullName: string;
-  avatar?: Promise<FileUpload>; // Upload is a Promise
-  timezone: string;
-  isActive?: boolean;
-  workingHours: WorkingHourInput[];
-}
-
-export const CreateStaffResolver = {
-  Upload: GraphQLUpload, // IMPORTANT: Add this scalar resolver
+export const CreateStaff = {
+  Upload: GraphQLUpload, 
 
   Mutation: {
-    createStaff: async (
+    createStaff: async(
       _: unknown,
-      { input }: { input: CreateStaffInput },
+      args: { input: any },
       ctx: any
     ) => {
       try {
-        let avatar_url: string | null = null;
-
-        // Handle avatar upload if provided
-        if (input.avatar) {
-          const file = await input.avatar; // Await the promise
+        let avatar_url: string | undefined;
+        
+        // Handle file upload if provided
+        if (args.input.avatar) {
+          const file = await args.input.avatar;
           const stream = file.createReadStream();
-
-          const uploaded = await uploadToCloudinary(stream, "Staff");
-          avatar_url = uploaded.secure_url;
-
-          console.log('✅ Avatar uploaded:', avatar_url);
+          const upload = await uploadToCloudinary(stream, "Staff Avatar Storage");
+          avatar_url = upload.secure_url;
         }
 
-        // Create staff
-        const staff = await prisma.staff.create({
-          data: {
-            fullName: input.fullName,
-            avatar_url: avatar_url, // Use uploaded URL
-            timezone: input.timezone,
-            isActive: input.isActive ?? true,
-          },
+        // Create staff with working hours in a transaction
+        const result = await prisma.$transaction(async (tx) => {
+          // Create staff
+          const staff = await tx.staff.create({
+            data: { 
+              fullName: args.input.fullName,
+              avatar_url: avatar_url,
+              timezone: args.input.timezone,
+              isActive: args.input.isActive ?? true,
+              isDeleted: args.input.isDeleted ?? false,
+            }
+          });
+
+          // Create working hours
+          const workingHours = await Promise.all(
+            args.input.workingHours.map((wh: any) => 
+              tx.workingHour.create({
+                data: {
+                  day: wh.day,
+                  startTime: wh.startTime,
+                  endTime: wh.endTime,
+                  staffId: staff.id
+                }
+              })
+            )
+          );
+
+          return {
+            ...staff,
+            workingHours: workingHours,
+          };
         });
 
-        // Create working hours
-        const workingHours = await Promise.all(
-          input.workingHours.map((wh) =>
-            prisma.workingHour.create({
-              data: {
-                day: wh.day,
-                startTime: wh.startTime,
-                endTime: wh.endTime,
-                staffId: staff.id,
-              },
-            })
-          )
-        );
-
-        return {
-          id: staff.id,
-          fullName: staff.fullName,
-          avatar_url: staff.avatar_url,
-          timezone: staff.timezone,
-          isActive: staff.isActive,
-          workingHours: workingHours,
-        };
+        return result;
       } catch (error: any) {
-        console.error("❌ Create staff error:", error);
-        throw new Error(`Failed to create staff member: ${error.message}`);
+        console.error("Error creating staff:", error);
+        throw new Error(error.message || "Failed to create staff");
       }
-    },
-  },
+    }
+  }
 };

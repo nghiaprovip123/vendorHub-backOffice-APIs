@@ -1,5 +1,5 @@
-import { UploadApiResponse } from "cloudinary"
 import { v2 as cloudinary } from "cloudinary"
+import { UploadApiResponse } from "cloudinary"
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
@@ -15,15 +15,14 @@ export const uploadToCloudinary = (
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder,
-        resource_type: "image",
+        resource_type: "image"
       }, (error, result) => {
-        if(error) {
-          return reject(error)
+        if (error) {
+          throw new Error("Fail to upload image")
         }
         resolve(result!)
       }
     )
     stream.pipe(uploadStream)
-  }
-  )
+  })
 }

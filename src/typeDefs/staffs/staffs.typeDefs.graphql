@@ -16,7 +16,8 @@ type Staff {
   timezone: String!
   isActive: Boolean!
   isDeleted: Boolean!
-  workingHours: [WorkingHour!]  
+  workingHours: [WorkingHour!]!
+  createdAt: String!
   updatedAt: String!
 }
 
@@ -30,9 +31,9 @@ input CreateStaffInput {
   fullName: String!
   avatar: Upload
   timezone: String! 
-  isActive: Boolean = true  
-  isDeleted: Boolean = false  
-  workingHours: [WorkingHourInput!]!  
+  isActive: Boolean
+  isDeleted: Boolean
+  workingHours: [WorkingHourInput!]!
 }
 
 type Mutation {
