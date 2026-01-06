@@ -137,7 +137,7 @@ model Service {
   // --- Metadata ---
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  staff     staffService[]
+  staff     StaffService[]
 
   @@unique([tenantId, code])
   @@unique([tenantId, slug])
@@ -221,7 +221,7 @@ model ServicePricingRule {
   @@index([tenantId, serviceId])
 }
 
-model staffService {
+model StaffService {
   id              String @id @map("_id") @default(auto()) @db.ObjectId
   
   staffId         String? @db.ObjectId
@@ -237,10 +237,23 @@ model Staff {
   fullName          String?
   avatar_url        String?
   timezone          String?
-  workingHours      String[]
   isActive          Boolean? @default(true)
   isDeleted         Boolean? @default(false)
-  services          staffService[]
+  services          StaffService[]
+  workingHours      WorkingHour[]
+  
+}
+
+model WorkingHour {
+  id                String @id @map("_id") @default(auto()) @db.ObjectId
+  day               String  
+  startTime         String
+  endTime           String
+  createAt          DateTime @default(now())
+  updateAt          DateTime @default(now())
+
+  staffId           String? @db.ObjectId 
+  staff             Staff? @relation(fields: [staffId], references: [id], onDelete: Cascade)
 }
 
 model Category {
