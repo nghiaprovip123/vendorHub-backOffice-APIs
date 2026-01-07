@@ -51,6 +51,10 @@ input DeleteStaffInput {
   id: String!
   public_id: String!
 }
+type DeleteStaffResponse {
+  success: Boolean!
+  message: String!
+}
 
 type Mutation {
   createStaff(input: CreateStaffInput!): Staff!
@@ -61,5 +65,5 @@ type Mutation {
 }
 
 type Mutation {
-  deleteStaff(input: DeleteStaffInput!): Staff!
+  deleteStaff(input: DeleteStaffInput!): DeleteStaffResponse!
 }
