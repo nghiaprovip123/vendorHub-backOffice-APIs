@@ -242,8 +242,8 @@ model Staff {
   services          StaffService[]
   workingHours      WorkingHour[]
   
-  createdAt         DateTime @default(now())  // Added
-  updatedAt         DateTime @updatedAt       // Added
+  createdAt         DateTime? @default(now())  // Added
+  updatedAt         DateTime? @updatedAt       // Added
 }
 
 model WorkingHour {

@@ -17,8 +17,8 @@ type Staff {
   isActive: Boolean!
   isDeleted: Boolean!
   workingHours: [WorkingHour!]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: String
+  updatedAt: String
 }
 
 input WorkingHourInput {
@@ -56,6 +56,10 @@ type DeleteStaffResponse {
   message: String!
 }
 
+input GetStaffListInput {
+  page: Int!
+}
+
 type Mutation {
   createStaff(input: CreateStaffInput!): Staff!
 }
@@ -67,3 +71,8 @@ type Mutation {
 type Mutation {
   deleteStaff(input: DeleteStaffInput!): DeleteStaffResponse!
 }
+
+type Query {
+  getStaffList(input: GetStaffListInput!): [Staff]!
+}
+
