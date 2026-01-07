@@ -47,10 +47,19 @@ input UpdateStaffInput {
   workingHours: [WorkingHourInput]
 }
 
+input DeleteStaffInput {
+  id: String!
+  public_id: String!
+}
+
 type Mutation {
   createStaff(input: CreateStaffInput!): Staff!
 }
 
 type Mutation {
   updateStaff(input: UpdateStaffInput!): Staff!
+}
+
+type Mutation {
+  deleteStaff(input: DeleteStaffInput!): Staff!
 }
