@@ -36,3 +36,10 @@ export const createStaffSchema = z.object({
       .array(createWorkingHourSchema)
       .min(1, 'At least one working hour is required').optional(),
   });
+
+  export const deleteStaffSchema = z.object(
+    {
+      id: z.string(),
+      public_id: z.string(),
+    }
+  )
