@@ -33,27 +33,29 @@ export const updateStaffService = async (input: UpdateStaffType) => {
                 }
             )
         
-            await tx.workingHour.deleteMany({
-                where: { staffId: staff.id },
-              });
+            if (input.workingHours?.length) {
+                await tx.workingHour.deleteMany({
+                  where: { staffId: staff.id },
+                });
               
-              const workingHours = await Promise.all(
-                input.workingHours.map((wh: any) =>
-                  tx.workingHour.create({
-                    data: {
-                      staffId: staff.id,
-                      day: wh.day,
-                      startTime: wh.startTime,
-                      endTime: wh.endTime,
-                    },
-                  })
-                )
-              );
+                const workingHours = await Promise.all(
+                  input.workingHours.map((wh) =>
+                    tx.workingHour.create({
+                      data: {
+                        staffId: staff.id,
+                        day: wh.day,
+                        startTime: wh.startTime,
+                        endTime: wh.endTime,
+                      },
+                    })
+                  )
+                );
             return {
                 ...staff,
                 workingHours: workingHours
             }
         } 
+        }
     )
     return result
 }
