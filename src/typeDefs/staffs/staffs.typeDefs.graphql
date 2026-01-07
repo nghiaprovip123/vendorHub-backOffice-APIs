@@ -27,6 +27,7 @@ input WorkingHourInput {
   endTime: String!
 }
 
+
 input CreateStaffInput {
   fullName: String!
   avatar: Upload
@@ -36,6 +37,20 @@ input CreateStaffInput {
   workingHours: [WorkingHourInput!]!
 }
 
+input UpdateStaffInput {
+  id: String!
+  fullName: String
+  avatar: Upload
+  timezone: String
+  isActive: Boolean
+  isDeleted: Boolean
+  workingHours: [WorkingHourInput]
+}
+
 type Mutation {
   createStaff(input: CreateStaffInput!): Staff!
+}
+
+type Mutation {
+  updateStaff(input: UpdateStaffInput!): Staff!
 }
