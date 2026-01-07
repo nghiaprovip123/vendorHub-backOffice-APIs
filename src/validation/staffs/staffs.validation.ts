@@ -25,3 +25,14 @@ export const createStaffSchema = z.object({
       .min(1, 'At least one working hour is required'),
   });
   
+  export const updateStaffSchema = z.object({
+    id: z.string(),
+    avatar: z.any().optional(), 
+    fullName: z.string().min(2).max(100),
+    timezone: z.string(),
+    isActive: z.boolean().optional().default(true),
+    isDeleted: z.boolean().optional().default(false),
+    workingHours: z
+      .array(createWorkingHourSchema)
+      .min(1, 'At least one working hour is required').optional(),
+  });
