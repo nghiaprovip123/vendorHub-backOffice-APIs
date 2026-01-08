@@ -1,0 +1,31 @@
+input CreateBookingInput { 
+  serviceId: String!
+  staffId: String                       
+  day: String!
+  dayOfWeek: String!
+  startTime: String!
+  endTime: String!
+  customerName: String!
+  customerPhone: String!
+  customerEmail: String!
+  notes: String!
+}
+
+type CreateBookingResponse {
+  id: ID
+  serviceId: String!
+  staffId: String                        
+  day: String
+  dayOfWeek: String
+  startTime: String
+  endTime: String
+  customerName: String
+  customerPhone: String
+  customerEmail: String
+  notes: String
+  status: String
+}
+
+type Mutation {
+    createBookingByCustomer(input: CreateBookingInput): CreateBookingResponse
+}
