@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { getAvailableStaffbyBookingTimeService } from "@/services/staffs/get-available-staff.service"
 
 const getAvailableStaffByBookingTime = async (
