@@ -1,0 +1,88 @@
+scalar Upload
+
+type WorkingHour {
+  id: ID!
+  day: String!        
+  startTime: String!  
+  endTime: String!    
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Staff {
+  id: ID!
+  fullName: String!
+  avatar_url: String
+  timezone: String!
+  isActive: Boolean!
+  isDeleted: Boolean!
+  workingHours: [WorkingHour!]!
+  createdAt: String
+  updatedAt: String
+}
+
+input WorkingHourInput {
+  day: String!
+  startTime: String!
+  endTime: String!
+}
+
+
+input CreateStaffInput {
+  fullName: String!
+  avatar: Upload
+  timezone: String! 
+  isActive: Boolean
+  isDeleted: Boolean
+  workingHours: [WorkingHourInput!]!
+}
+
+input UpdateStaffInput {
+  id: String!
+  fullName: String
+  avatar: Upload
+  timezone: String
+  isActive: Boolean
+  isDeleted: Boolean
+  workingHours: [WorkingHourInput]
+}
+
+input DeleteStaffInput {
+  id: String!
+  public_id: String!
+}
+type DeleteStaffResponse {
+  success: Boolean!
+  message: String!
+}
+
+input GetStaffListInput {
+  page: Int!
+}
+
+input GetAvailableStaffByBookingtimeInput {
+  day: String!
+  dayOfWeek: String!
+  startTime: String!
+  endTime: String!
+}
+
+type Mutation {
+  createStaff(input: CreateStaffInput!): Staff!
+}
+
+type Mutation {
+  updateStaff(input: UpdateStaffInput!): Staff!
+}
+
+type Mutation {
+  deleteStaff(input: DeleteStaffInput!): DeleteStaffResponse!
+}
+
+type Query {
+  getStaffList(input: GetStaffListInput!): [Staff]!
+}
+
+type Query {
+  getAvailableStaffByBookingTime(input: GetAvailableStaffByBookingtimeInput!): [Staff]!
+}

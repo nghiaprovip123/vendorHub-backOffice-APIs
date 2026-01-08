@@ -14,7 +14,6 @@ enum PricingType {
 # INPUT
 # ================================
 input CreateProductsInput {
-  id: ID!
   tenantId: String
   userId: String
   sellerId: String
@@ -99,4 +98,3 @@ type CreateProductResponse {
 extend type Mutation {
   createProducts(input: CreateProductsInput!): CreateProductResponse!
 }
-

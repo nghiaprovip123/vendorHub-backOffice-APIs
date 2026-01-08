@@ -15,8 +15,9 @@ const drainHttpServer_1 = require("@apollo/server/plugin/drainHttpServer");
 const express4_1 = require("@as-integrations/express4");
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const mergeResolvers_1 = require("./resolvers/mergeResolvers");
+const merge_resolvers_1 = require("./resolvers/merge-resolvers");
 const dotenv_1 = __importDefault(require("dotenv"));
+const graphql_upload_minimal_1 = require("graphql-upload-minimal");
 // Asnychronous Anonymous Function
 // Inside of server.ts -> await keyword
 dotenv_1.default.config();
@@ -30,7 +31,7 @@ dotenv_1.default.config();
         origin: true, // hoặc '*'
         credentials: true,
     }));
-    const schema = (0, schema_1.makeExecutableSchema)({ typeDefs: typeDefs_1.typeDefs, resolvers: mergeResolvers_1.resolvers });
+    const schema = (0, schema_1.makeExecutableSchema)({ typeDefs: typeDefs_1.typeDefs, resolvers: merge_resolvers_1.resolvers });
     // ws Server
     const wsServer = new ws_1.WebSocketServer({
         server: httpServer,
@@ -55,6 +56,10 @@ dotenv_1.default.config();
     });
     // start our server
     await server.start();
+    app.use((0, graphql_upload_minimal_1.graphqlUploadExpress)({
+        maxFileSize: 5000000,
+        maxFiles: 1,
+    }));
     // apply middlewares (cors, expressmiddlewares)
     app.use('/graphql', (0, cors_1.default)(), body_parser_1.default.json(), (0, express4_1.expressMiddleware)(server, {
         context: async ({ req, res }) => ({
