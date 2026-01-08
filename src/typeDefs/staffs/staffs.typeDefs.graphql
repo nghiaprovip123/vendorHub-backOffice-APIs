@@ -60,6 +60,10 @@ input GetStaffListInput {
   page: Int!
 }
 
+input GetAvailableStaffInput {
+  bookingTime: String!
+}
+
 type Mutation {
   createStaff(input: CreateStaffInput!): Staff!
 }
@@ -76,3 +80,6 @@ type Query {
   getStaffList(input: GetStaffListInput!): [Staff]!
 }
 
+type Query {
+  getAvailableStaff(input: GetAvailableStaffInput!): [Staff]!
+}

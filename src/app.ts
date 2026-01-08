@@ -10,7 +10,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { expressMiddleware } from '@as-integrations/express4';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { resolvers } from './resolvers/mergeResolvers';
+import { resolvers } from './resolvers/merge-resolvers';
 import dotenv from "dotenv";
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
