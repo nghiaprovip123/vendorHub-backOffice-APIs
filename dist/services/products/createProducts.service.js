@@ -1,14 +1,10 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProductsService = void 0;
-const product_model_1 = require("../../models/product.model");
-const createProductsService = (data) => {
-    const now = new Date();
-    const finalData = {
-        ...data,
-        createdAt: now,
-        updatedAt: now,
-    };
-    return product_model_1.productModel.createProductModel(finalData);
-};
-exports.createProductsService = createProductsService;
+// import { PricingType } from "@prisma/client";
+// import { productModel } from "../../models/product.model";
+// import { createProductsValid } from "../../validation/products/products.validation"
+// import * as z from "zod"
+// type createProductType = z.infer< typeof createProductsValid >
+// export const createProductsService = async (data:createProductType) => {
+//   const createProduct = await productModel.createProductModel(data)
+//   return createProduct
+// }

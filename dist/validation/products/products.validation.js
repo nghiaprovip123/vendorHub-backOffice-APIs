@@ -5,9 +5,13 @@ const zod_1 = require("zod");
 const client_1 = require("@prisma/client");
 exports.createProductsValid = zod_1.z
     .object({
-    id: zod_1.z.string().min(1, "ID is required"),
+    tenantId: zod_1.z.string().optional(),
+    userId: zod_1.z.string().optional(),
+    sellerId: zod_1.z.string().optional(),
+    code: zod_1.z.string(),
     title: zod_1.z.string().min(1, "Title is required"),
     slug: zod_1.z.string().min(1, "Slug is required"),
+    description: zod_1.z.string(),
     tags: zod_1.z.array(zod_1.z.string()).min(1, "At least one tag is required"),
     pricingType: zod_1.z.nativeEnum(client_1.PricingType),
     currency: zod_1.z.string().optional(),
