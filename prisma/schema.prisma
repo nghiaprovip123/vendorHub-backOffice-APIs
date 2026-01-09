@@ -177,6 +177,11 @@ model Booking {
   customerEmail                   String?
   notes                           String?
   status                          String?
+  
+  cancelledAt                     DateTime? @default(now())
+  cancelledBy                     String?   
+  cancelReason                    String?   
+
   createdAt                       DateTime? @default(now())
   updatedAt                       DateTime? @updatedAt
 }

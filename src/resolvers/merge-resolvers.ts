@@ -7,6 +7,7 @@ import { ViewStaffList } from "./staffs/view-staff-list.resolver"
 import { GetAvailableStaff } from "./staffs/get-available-staff.resolver"
 import { CreateBookingByCustomer } from "./booking/create-booking.resolver"
 import { AssignStaffByBookingRequest } from "./booking/assign-staff.resolver"
+import { CancelBooking } from "./booking/cancel-booking.resolver"
 export const resolvers = [
   // productResolver,
   CreateStaff,
@@ -15,5 +16,6 @@ export const resolvers = [
   ViewStaffList,
   GetAvailableStaff,
   CreateBookingByCustomer,
-  AssignStaffByBookingRequest
+  AssignStaffByBookingRequest,
+  CancelBooking
 ];
