@@ -13,7 +13,7 @@ const assignStaffByBookingRequest = async (
         }    
     }
     catch (error: any) {
-        throw new Error("Unknown Error")
+        throw error
     }
 }
 
