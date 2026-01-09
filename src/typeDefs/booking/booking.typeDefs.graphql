@@ -26,6 +26,21 @@ type CreateBookingResponse {
   status: String
 }
 
+input AssignStaffForBookingRequestInput {
+  staffId: String!
+  bookingId: String!
+}
+
+type AssignStaffForBookingRequestResponse {
+  success: Boolean
+  message: String
+  booking: CreateBookingResponse
+}
+
 type Mutation {
     createBookingByCustomer(input: CreateBookingInput): CreateBookingResponse
+}
+
+type Mutation {
+  assignStaffByBookingRequest(input: AssignStaffForBookingRequestInput): AssignStaffForBookingRequestResponse
 }
