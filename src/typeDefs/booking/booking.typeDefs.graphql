@@ -55,6 +55,11 @@ input ViewBookingDetailInput {
   bookingId: String!
 }
 
+type getBookingListInBackOfficeRespone {
+  bookingList: [CreateBookingResponse]
+  total: Int
+}
+
 type Mutation {
     createBookingByCustomer(input: CreateBookingInput): CreateBookingResponse
 }
@@ -69,4 +74,8 @@ type Mutation {
 
 type Query {
   viewBookingDetailInBackOffice(input: ViewBookingDetailInput): CreateBookingResponse
+}
+
+type Query {
+  getBookingListInBackOffice(): getBookingListInBackOfficeRespone
 }
