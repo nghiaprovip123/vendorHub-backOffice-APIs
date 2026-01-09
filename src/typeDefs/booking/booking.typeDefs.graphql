@@ -24,6 +24,8 @@ type CreateBookingResponse {
   customerEmail: String
   notes: String
   status: String
+  cancelledAt: String
+  cancelReason: String
 }
 
 input AssignStaffForBookingRequestInput {
@@ -37,10 +39,25 @@ type AssignStaffForBookingRequestResponse {
   booking: CreateBookingResponse
 }
 
+input CancelBookingInput {
+  bookingId: String!
+  cancelReason: String!
+} 
+
+type CancelBookingResponse {
+  success: Boolean
+  message: String
+  booking: CreateBookingResponse
+}
+
 type Mutation {
     createBookingByCustomer(input: CreateBookingInput): CreateBookingResponse
 }
 
 type Mutation {
   assignStaffByBookingRequest(input: AssignStaffForBookingRequestInput): AssignStaffForBookingRequestResponse
+}
+
+type Mutation {
+  cancelBooking(input: CancelBookingInput): CancelBookingResponse
 }
