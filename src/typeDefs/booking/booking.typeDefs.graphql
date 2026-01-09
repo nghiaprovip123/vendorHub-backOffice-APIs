@@ -27,6 +27,7 @@ type CreateBookingResponse {
   cancelledAt: String
   cancelReason: String
   createdAt: String
+  updatedAt: String
 }
 
 input AssignStaffForBookingRequestInput {
@@ -60,6 +61,10 @@ type getBookingListInBackOfficeRespone {
   total: Int
 }
 
+input getBookingWeekyListInBackOffice {
+  reference: String
+}
+
 type Mutation {
     createBookingByCustomer(input: CreateBookingInput): CreateBookingResponse
 }
@@ -77,5 +82,5 @@ type Query {
 }
 
 type Query {
-  getBookingListInBackOffice(): getBookingListInBackOfficeRespone
+  getBookingListInBackOfficeByWeek(input: getBookingWeekyListInBackOffice): getBookingListInBackOfficeRespone
 }
