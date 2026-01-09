@@ -9,6 +9,7 @@ import { CreateBookingByCustomer } from "./booking/create-booking.resolver"
 import { AssignStaffByBookingRequest } from "./booking/assign-staff.resolver"
 import { CancelBooking } from "./booking/cancel-booking.resolver"
 import { ViewBookingDetailInBackOffce } from "./booking/view-booking-detail.resolver"
+import { GetBookingListInBackOfficeByWeek } from "./booking/get-booking-list-by-week.resolver"
 export const resolvers = [
   // productResolver,
   CreateStaff,
@@ -19,5 +20,6 @@ export const resolvers = [
   CreateBookingByCustomer,
   AssignStaffByBookingRequest,
   CancelBooking,
-  ViewBookingDetailInBackOffce
+  ViewBookingDetailInBackOffce,
+  GetBookingListInBackOfficeByWeek
 ];
