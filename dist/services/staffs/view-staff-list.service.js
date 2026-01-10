@@ -11,7 +11,11 @@ const getStaffListService = async (page) => {
             skip,
             take: PAGE_SIZE,
         });
-        return staffs;
+        const total = await prisma_1.prisma.staff.count();
+        return {
+            items: staffs,
+            total
+        };
     }
     catch (error) {
         throw new Error("Fail to fetch list of staffs");

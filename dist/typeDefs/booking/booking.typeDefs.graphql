@@ -1,0 +1,86 @@
+input CreateBookingInput { 
+  serviceId: String!
+  staffId: String                       
+  day: String!
+  dayOfWeek: String!
+  startTime: String!
+  endTime: String!
+  customerName: String!
+  customerPhone: String!
+  customerEmail: String!
+  notes: String!
+}
+
+type CreateBookingResponse {
+  id: ID
+  serviceId: String!
+  staffId: String                        
+  day: String
+  dayOfWeek: String
+  startTime: String
+  endTime: String
+  customerName: String
+  customerPhone: String
+  customerEmail: String
+  notes: String
+  status: String
+  cancelledAt: String
+  cancelReason: String
+  createdAt: String
+  updatedAt: String
+}
+
+input AssignStaffForBookingRequestInput {
+  staffId: String!
+  bookingId: String!
+}
+
+type AssignStaffForBookingRequestResponse {
+  success: Boolean
+  message: String
+  booking: CreateBookingResponse
+}
+
+input CancelBookingInput {
+  bookingId: String!
+  cancelReason: String!
+} 
+
+type CancelBookingResponse {
+  success: Boolean
+  message: String
+  booking: CreateBookingResponse
+}
+
+input ViewBookingDetailInput {
+  bookingId: String!
+}
+
+type getBookingListInBackOfficeRespone {
+  bookingList: [CreateBookingResponse]
+  total: Int
+}
+
+input getBookingWeekyListInBackOffice {
+  reference: String
+}
+
+type Mutation {
+    createBookingByCustomer(input: CreateBookingInput): CreateBookingResponse
+}
+
+type Mutation {
+  assignStaffByBookingRequest(input: AssignStaffForBookingRequestInput): AssignStaffForBookingRequestResponse
+}
+
+type Mutation {
+  cancelBooking(input: CancelBookingInput): CancelBookingResponse
+}
+
+type Query {
+  viewBookingDetailInBackOffice(input: ViewBookingDetailInput): CreateBookingResponse
+}
+
+type Query {
+  getBookingListInBackOfficeByWeek(input: getBookingWeekyListInBackOffice): getBookingListInBackOfficeRespone
+}

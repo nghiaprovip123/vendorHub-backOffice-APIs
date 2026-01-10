@@ -1,29 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetAvailableStaff = void 0;
-const prisma_1 = require("../../lib/prisma");
+const get_available_staff_service_1 = require("../../services/staffs/get-available-staff.service");
 const getAvailableStaffByBookingTime = async (_, args, ctx) => {
-    const { dayOfWeek, startTime, endTime } = args.input;
-    const workingHours = await prisma_1.prisma.workingHour.findMany({
-        where: {
-            day: dayOfWeek,
-            startTime: { lte: startTime },
-            endTime: { gte: endTime },
-        },
-        select: {
-            staffId: true,
-        },
-    });
-    const staffIds = workingHours.map(w => w.staffId);
-    if (staffIds.length === 0)
-        return [];
-    const staffs = await prisma_1.prisma.staff.findMany({
-        where: {
-            id: { in: staffIds },
-            isDeleted: false,
-        },
-    });
-    return staffs;
+    try {
+        const result = await (0, get_available_staff_service_1.getAvailableStaffbyBookingTimeService)(args.input);
+        return result;
+    }
+    catch (error) {
+        throw new Error("Unknown Error");
+    }
 };
 exports.GetAvailableStaff = {
     Query: {
