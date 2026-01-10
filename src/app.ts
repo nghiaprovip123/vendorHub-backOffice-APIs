@@ -13,7 +13,8 @@ import bodyParser from 'body-parser';
 import { resolvers } from './resolvers/merge-resolvers';
 import dotenv from "dotenv";
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
-
+import { logger, createContextLogger } from './lib/logger';
+import morgan from 'morgan';
 // Asnychronous Anonymous Function
 // Inside of server.ts -> await keyword
 dotenv.config();
@@ -23,6 +24,38 @@ dotenv.config();
     // Server code in here!
     const pubsub = new PubSub(); // Publish and Subscribe, Publish -> everyone gets to hear it
     const app = express();
+    app.use((req: any, res, next) => {
+        req.id = Math.random().toString(36).substring(7);
+        res.setHeader('X-Request-ID', req.id);
+        next();
+    });
+    // HTTP request logging
+    morgan.token('request-id', (req: any) => req.id);
+
+    app.use(
+      morgan((tokens, req: any, res) => {
+        return JSON.stringify({
+          type: 'http_access',
+          request_id: req.id,
+          method: tokens.method(req, res),
+          url: tokens.url(req, res),
+          status: Number(tokens.status(req, res)),
+          response_time_ms: Number(tokens['response-time'](req, res)),
+          content_length: tokens.res(req, res, 'content-length'),
+          user_agent: tokens['user-agent'](req, res),
+          ip: tokens['remote-addr'](req, res),
+        });
+      }, {
+        stream: {
+          write: (message: string) => {
+            logger.info('http_request', JSON.parse(message));
+          },
+        },
+      })
+    );
+    
+    // Request ID middleware
+
     const httpServer = createServer(app);
 
     interface createNewsEventInput {
@@ -70,12 +103,20 @@ dotenv.config();
         })
       )
     // apply middlewares (cors, expressmiddlewares)
-    app.use('/graphql', cors<cors.CorsRequest>(), bodyParser.json(), expressMiddleware(server, {
-        context: async ({ req, res }) => ({
-            req,
-            res,
-            pubsub, // nếu cần cho subscriptions
-        })
+    app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server, {
+        context: async ({ req, res }: any) => {
+            const contextLogger = createContextLogger({
+                request_id: req.id,
+            });
+            
+            return {
+                req,
+                res,
+                pubsub,
+                logger: contextLogger, // ← Add logger to context
+                requestId: req.id,
+            };
+        }
     }));
       
 
@@ -83,8 +124,12 @@ dotenv.config();
     // http server start
 
     httpServer.listen(PORT, "0.0.0.0", () => {
-        console.log(`Server running on http://0.0.0.0:${PORT}/graphql`);
+        logger.info('Server started', {
+            port: PORT,
+            env: process.env.NODE_ENV,
+            graphql: '/graphql',
+            loki_enabled: !!process.env.GRAFANA_LOKI_URL,
+        });
     });
-
 
 })();

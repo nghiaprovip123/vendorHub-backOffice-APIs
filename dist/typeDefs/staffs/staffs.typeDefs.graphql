@@ -59,10 +59,13 @@ type DeleteStaffResponse {
 input GetStaffListInput {
   page: Int!
 }
+type GetStaffListResponse {
+  items: [Staff]!
+  total: Int!
+}
 
 input GetAvailableStaffByBookingtimeInput {
   day: String!
-  dayOfWeek: String!
   startTime: String!
   endTime: String!
 }
@@ -80,7 +83,7 @@ type Mutation {
 }
 
 type Query {
-  getStaffList(input: GetStaffListInput!): [Staff]!
+  getStaffList(input: GetStaffListInput!): GetStaffListResponse!
 }
 
 type Query {
