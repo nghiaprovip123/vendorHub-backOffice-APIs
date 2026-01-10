@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma"
 import { viewBookingDetailInBackOfficeService } from "@/services/booking/view-booking-detail.service"
 const viewBookingDetailInBackOffice = async(
     _: unknown,
