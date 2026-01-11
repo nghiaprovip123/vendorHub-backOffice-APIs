@@ -10,7 +10,7 @@ const getStaffList = async (
     const result = await getStaffListService(args.input.page);
     return result;
   } catch (error) {
-    throw new Error("Fail to fetch list of staffs")
+    throw error
   }
 }
 
