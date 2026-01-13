@@ -9,7 +9,7 @@ const updateStaff = async (
         const updateStaff = updateStaffService(args.input)
         return updateStaff
     } catch (error: any) {
-        throw new Error("Unknown Error")
+        throw error
     }
 }
 

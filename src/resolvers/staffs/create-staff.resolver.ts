@@ -11,7 +11,7 @@ const createStaff = async(
     return createStaff;
   } catch (error: any) {
     console.error("Error creating staff:", error);
-    throw new Error(error.message || "Failed to create staff");
+    throw error
   }
 }
 

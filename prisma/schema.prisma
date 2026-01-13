@@ -52,7 +52,7 @@ model User {
   password     String
   name         String?
   userName     String?
-  phonenumber  String?
+  phone        String?
 
   accessToken  String?
   refreshToken String?

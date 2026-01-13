@@ -15,6 +15,8 @@ import dotenv from "dotenv";
 import { graphqlUploadExpress } from 'graphql-upload-minimal';
 import { logger, createContextLogger } from './lib/logger';
 import morgan from 'morgan';
+import AuthRouter from '@/routes/auth.route'
+import { errorHandler } from '@/middlewares/error.middleware'
 // Asnychronous Anonymous Function
 // Inside of server.ts -> await keyword
 dotenv.config();
@@ -24,6 +26,7 @@ dotenv.config();
     // Server code in here!
     const pubsub = new PubSub(); // Publish and Subscribe, Publish -> everyone gets to hear it
     const app = express();
+    app.use(express.json())
     app.use((req: any, res, next) => {
         req.id = Math.random().toString(36).substring(7);
         res.setHeader('X-Request-ID', req.id);
@@ -102,6 +105,7 @@ dotenv.config();
           maxFiles: 1,
         })
       )
+    app.use('/auth', AuthRouter)
     // apply middlewares (cors, expressmiddlewares)
     app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server, {
         context: async ({ req, res }: any) => {
@@ -118,6 +122,9 @@ dotenv.config();
             };
         }
     }));
+
+    app.use(errorHandler)
+
       
 
     // http server start

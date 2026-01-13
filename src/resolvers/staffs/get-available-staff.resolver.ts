@@ -10,7 +10,7 @@ const getAvailableStaffByBookingTime = async (
      return result
    }
    catch (error: any) {
-    throw new Error("Unknown Error")
+    throw error
    }
 }
 
