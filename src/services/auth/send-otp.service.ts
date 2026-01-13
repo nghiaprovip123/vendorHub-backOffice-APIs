@@ -3,12 +3,9 @@ import sql from "@/lib/postgresql"
 import ApiError from "@/utils/ApiError"
 import crypto from "crypto"
 import { sendOtpEmailRegisteration } from "@/lib/send-otp-helper"
-
-type SendOTPServiceType = {
-    phone: string,
-    type: string,
-    email: string,
-}
+import { SendOTPSchema } from "@/validation/auth/auth.validation"
+import * as z from "zod"
+type SendOTPServiceType = z.infer< typeof SendOTPSchema >
 export const SendOTPService = async ({phone, type, email}: SendOTPServiceType) => {
     if(!email || !phone) {
         throw new ApiError(400, 'Email is required')
