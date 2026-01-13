@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginController = void 0;
 const ApiError_1 = __importDefault(require("../utils/ApiError"));
 const argon2_1 = __importDefault(require("argon2"));
-const postgreSQL_1 = __importDefault(require("../lib/postgreSQL"));
+const postgresql_1 = __importDefault(require("../lib/postgresql"));
 const LoginController = async (req, res, next) => {
     const body = await req.body;
     const { email, phone, password } = body;
     if (!phone || !password) {
         return new ApiError_1.default(400, "Phone and password are required");
     }
-    const rows = await (0, postgreSQL_1.default) `
+    const rows = await (0, postgresql_1.default) `
       SELECT 
         au.id,
         au.passwordHash,
