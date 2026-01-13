@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import ApiError from "@/utils/ApiError"
 import argon2 from "argon2"
-import sql from '@/lib/postgreSQL'
+import sql from '@/lib/postgresql'
 
 
 export const LoginController = async(req: Request, res: Response, next: NextFunction) => {
@@ -42,6 +42,6 @@ export const LoginController = async(req: Request, res: Response, next: NextFunc
   if (!isValid) {
     return new ApiError(401, "Invalid credentials")
   }
-  
+
   res.status(200).json({ success: true })
 }

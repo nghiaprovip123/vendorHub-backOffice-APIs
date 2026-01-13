@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import sql from "@/lib/postgreSQL"
+import sql from "@/lib/postgresql"
 import ApiError from "@/utils/ApiError"
 import crypto from "crypto"
 import { sendOtpEmailRegisteration } from "@/lib/send-otp-helper"
@@ -65,6 +65,5 @@ export const SendOTPController = async (req: Request, res: Response, next: NextF
     catch(err){
         next(err)
     }
-
   }
   
