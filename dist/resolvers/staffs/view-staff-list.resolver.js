@@ -9,7 +9,7 @@ const getStaffList = async (_, args) => {
         return result;
     }
     catch (error) {
-        throw new Error("Fail to fetch list of staffs");
+        throw error;
     }
 };
 exports.ViewStaffList = {

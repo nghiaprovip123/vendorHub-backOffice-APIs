@@ -9,7 +9,7 @@ const updateStaff = async (_, args, ctx) => {
         return updateStaff;
     }
     catch (error) {
-        throw new Error("Unknown Error");
+        throw error;
     }
 };
 exports.UpdateStaff = {
