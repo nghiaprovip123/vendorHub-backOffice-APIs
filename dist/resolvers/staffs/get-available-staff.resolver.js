@@ -8,7 +8,7 @@ const getAvailableStaffByBookingTime = async (_, args, ctx) => {
         return result;
     }
     catch (error) {
-        throw new Error("Unknown Error");
+        throw error;
     }
 };
 exports.GetAvailableStaff = {

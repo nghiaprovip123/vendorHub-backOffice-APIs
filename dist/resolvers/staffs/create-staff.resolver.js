@@ -10,7 +10,7 @@ const createStaff = async (_, args, ctx) => {
     }
     catch (error) {
         console.error("Error creating staff:", error);
-        throw new Error(error.message || "Failed to create staff");
+        throw error;
     }
 };
 exports.CreateStaff = {

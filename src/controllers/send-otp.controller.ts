@@ -2,16 +2,16 @@ import { Request, Response, NextFunction } from "express"
 import sql from "@/lib/postgreSQL"
 import ApiError from "@/utils/ApiError"
 import crypto from "crypto"
-
+import { sendOtpEmailRegisteration } from "@/lib/send-otp-helper"
 type SendOTPControllerType = {
     phone: string,
     type: string
 }
 export const SendOTPController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { phone, type } = req.body
+        const { phone, type, email } = req.body
   
-        if (!phone) {
+        if (!email || !phone) {
           throw new ApiError(400, 'Phone is required')
         }
       
@@ -19,6 +19,7 @@ export const SendOTPController = async (req: Request, res: Response, next: NextF
           SELECT COUNT(*)::int AS count
           FROM otps
           WHERE type = ${type}
+            AND email = ${email}
             AND phone = ${phone}
             AND createdat > NOW() - INTERVAL '15 minutes'
         `
@@ -32,6 +33,7 @@ export const SendOTPController = async (req: Request, res: Response, next: NextF
           SET isverified = true,
               isactive = false
           WHERE type = ${type}
+            AND email = ${email}
             AND phone = ${phone}
             AND isverified = false
             AND isactive = true
@@ -41,16 +43,18 @@ export const SendOTPController = async (req: Request, res: Response, next: NextF
         // const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
       
         const [{ expiresat }] = await sql`
-          INSERT INTO otps (type, phone, otp, expiresat)
-          VALUES (${type}, ${phone}, ${otp}, NOW() + INTERVAL '5 minutes')
+          INSERT INTO otps (type, email, otp, expiresat, phone)
+          VALUES (${type}, ${email}, ${otp}, NOW() + INTERVAL '5 minutes', ${phone})
           RETURNING expiresat
         `
         const sendOTP = await sql `
             SELECT * FROM otps
-            WHERE phone = ${phone}
+            WHERE email = ${email}
                 AND isactive = 'true'
                 AND isverified = 'false'
         `
+        await sendOtpEmailRegisteration(email, otp);
+
         res.json({
           success: true,
           otp: sendOTP,

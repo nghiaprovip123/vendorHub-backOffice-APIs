@@ -20,6 +20,8 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const graphql_upload_minimal_1 = require("graphql-upload-minimal");
 const logger_1 = require("./lib/logger");
 const morgan_1 = __importDefault(require("morgan"));
+const auth_route_1 = __importDefault(require("./routes/auth.route"));
+const error_middleware_1 = require("./middlewares/error.middleware");
 // Asnychronous Anonymous Function
 // Inside of server.ts -> await keyword
 dotenv_1.default.config();
@@ -28,18 +30,34 @@ dotenv_1.default.config();
     // Server code in here!
     const pubsub = new graphql_subscriptions_1.PubSub(); // Publish and Subscribe, Publish -> everyone gets to hear it
     const app = (0, express_1.default)();
-    // HTTP request logging
-    app.use((0, morgan_1.default)('combined', {
-        stream: {
-            write: (message) => logger_1.logger.info(message.trim())
-        }
-    }));
-    // Request ID middleware
+    app.use(express_1.default.json());
     app.use((req, res, next) => {
         req.id = Math.random().toString(36).substring(7);
         res.setHeader('X-Request-ID', req.id);
         next();
     });
+    // HTTP request logging
+    morgan_1.default.token('request-id', (req) => req.id);
+    app.use((0, morgan_1.default)((tokens, req, res) => {
+        return JSON.stringify({
+            type: 'http_access',
+            request_id: req.id,
+            method: tokens.method(req, res),
+            url: tokens.url(req, res),
+            status: Number(tokens.status(req, res)),
+            response_time_ms: Number(tokens['response-time'](req, res)),
+            content_length: tokens.res(req, res, 'content-length'),
+            user_agent: tokens['user-agent'](req, res),
+            ip: tokens['remote-addr'](req, res),
+        });
+    }, {
+        stream: {
+            write: (message) => {
+                logger_1.logger.info('http_request', JSON.parse(message));
+            },
+        },
+    }));
+    // Request ID middleware
     const httpServer = (0, http_1.createServer)(app);
     app.use((0, cors_1.default)({
         origin: true, // hoặc '*'
@@ -74,6 +92,7 @@ dotenv_1.default.config();
         maxFileSize: 5000000,
         maxFiles: 1,
     }));
+    app.use('/auth', auth_route_1.default);
     // apply middlewares (cors, expressmiddlewares)
     app.use('/graphql', (0, cors_1.default)(), body_parser_1.default.json(), (0, express4_1.expressMiddleware)(server, {
         context: async ({ req, res }) => {
@@ -89,6 +108,7 @@ dotenv_1.default.config();
             };
         }
     }));
+    app.use(error_middleware_1.errorHandler);
     // http server start
     // http server start
     httpServer.listen(PORT, "0.0.0.0", () => {

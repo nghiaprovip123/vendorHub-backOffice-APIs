@@ -13,6 +13,7 @@ const assign_staff_resolver_1 = require("./booking/assign-staff.resolver");
 const cancel_booking_resolver_1 = require("./booking/cancel-booking.resolver");
 const view_booking_detail_resolver_1 = require("./booking/view-booking-detail.resolver");
 const get_booking_list_by_week_resolver_1 = require("./booking/get-booking-list-by-week.resolver");
+const get_booking_list_by_month_resolver_1 = require("./booking/get-booking-list-by-month.resolver");
 exports.resolvers = [
     // productResolver,
     create_staff_resolver_1.CreateStaff,
@@ -24,5 +25,6 @@ exports.resolvers = [
     assign_staff_resolver_1.AssignStaffByBookingRequest,
     cancel_booking_resolver_1.CancelBooking,
     view_booking_detail_resolver_1.ViewBookingDetailInBackOffce,
-    get_booking_list_by_week_resolver_1.GetBookingListInBackOfficeByWeek
+    get_booking_list_by_week_resolver_1.GetBookingListInBackOfficeByWeek,
+    get_booking_list_by_month_resolver_1.GetBookingListInBackOfficeByMonth
 ];
