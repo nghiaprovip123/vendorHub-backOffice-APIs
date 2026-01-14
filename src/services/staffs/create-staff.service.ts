@@ -8,7 +8,7 @@ import { createWorkingHourSchema, createStaffSchema } from "@/validation/staffs/
 type createStaffServiceType = z.infer< typeof createStaffSchema >;
 
 export const createStaffService = async(input: createStaffServiceType) => {
-    let avatar_url: string | undefined;
+    let avatar_url: string;
     if (input.avatar) {
       const file = await input.avatar;
       const stream = file.createReadStream();

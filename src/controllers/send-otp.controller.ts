@@ -10,7 +10,7 @@ type SendOTPControllerType = {
 }
 export const SendOTPController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { phone, type, email } = req.body
+        const { phone, type, email} = req.body
   
         const result = await SendOTPService({phone, type, email})
         return res.json({

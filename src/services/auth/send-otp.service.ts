@@ -35,7 +35,7 @@ export const SendOTPService = async ({phone, type, email}: SendOTPServiceType) =
 
     const generateOTP = await crypto.randomInt(100000, 999999).toString()
 
-    const [{expiresat}] = await sql`
+    const [{expiresat, id}] = await sql`
         INSERT INTO otps (
             type, 
             email,
@@ -49,15 +49,13 @@ export const SendOTPService = async ({phone, type, email}: SendOTPServiceType) =
             NOW() + INTERVAL '15 Minutes',
             ${phone}
         )
-        RETURNING expiresAt
+        RETURNING expiresAt, id
     `
 
     const [sendOTP] = await sql`
         SELECT *
         FROM otps
-        WHERE email = ${email}
-        AND isactive = true
-        AND isverified = false
+        WHERE id= ${id}
     `
 
 
