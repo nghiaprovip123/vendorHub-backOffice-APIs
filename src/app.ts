@@ -16,15 +16,12 @@ import { graphqlUploadExpress } from 'graphql-upload-minimal';
 import { logger, createContextLogger } from './lib/logger';
 import morgan from 'morgan';
 import AuthRouter from '@/routes/auth.route'
-import { errorHandler } from '@/middlewares/error.middleware'
-// Asnychronous Anonymous Function
-// Inside of server.ts -> await keyword
+import { errorHandler } from '@/guards/error.guard'
 dotenv.config();
 
 (async function () {
     const PORT = Number(process.env.PORT) || 3000;
-    // Server code in here!
-    const pubsub = new PubSub(); // Publish and Subscribe, Publish -> everyone gets to hear it
+    const pubsub = new PubSub(); 
     const app = express();
     app.use(express.json())
     app.use((req: any, res, next) => {
@@ -32,7 +29,6 @@ dotenv.config();
         res.setHeader('X-Request-ID', req.id);
         next();
     });
-    // HTTP request logging
     morgan.token('request-id', (req: any) => req.id);
 
     app.use(
@@ -57,8 +53,6 @@ dotenv.config();
       })
     );
     
-    // Request ID middleware
-
     const httpServer = createServer(app);
 
     interface createNewsEventInput {
@@ -97,7 +91,6 @@ dotenv.config();
         ]
     });
 
-    // start our server
     await server.start();
     app.use(
         graphqlUploadExpress({
@@ -106,7 +99,6 @@ dotenv.config();
         })
       )
     app.use('/auth', AuthRouter)
-    // apply middlewares (cors, expressmiddlewares)
     app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server, {
         context: async ({ req, res }: any) => {
             const contextLogger = createContextLogger({
@@ -124,11 +116,6 @@ dotenv.config();
     }));
 
     app.use(errorHandler)
-
-      
-
-    // http server start
-    // http server start
 
     httpServer.listen(PORT, "0.0.0.0", () => {
         logger.info('Server started', {
